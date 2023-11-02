@@ -45,11 +45,12 @@ description = "Assorted utilities for working with S3 storage"
 license = "Apache-2.0"
 authors = ["Brian Aydemir <baydemir@morgridge.org>"]
 repository = "https://github.com/brianaydemir/s3-tools"
-packages = []
+packages = [{ include = "app" }]
 
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.10"
+humanize = "~4.8"
 minio = "~7.1"
 
 

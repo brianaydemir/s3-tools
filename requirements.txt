@@ -1,6 +1,9 @@
 certifi==2023.7.22 ; python_version >= "3.9" and python_version < "3.10" \
     --hash=sha256:539cc1d13202e33ca466e88b2807e29f4c13049d6d87031a3c110744495cb082 \
     --hash=sha256:92d6037539857d8206b8f6ae472e8b77db8058fec5937a1ef3f54304089edbb9
+humanize==4.8.0 ; python_version >= "3.9" and python_version < "3.10" \
+    --hash=sha256:8bc9e2bb9315e61ec06bf690151ae35aeb65651ab091266941edf97c90836404 \
+    --hash=sha256:9783373bf1eec713a770ecaa7c2d7a7902c98398009dfa3d8a2df91eec9311e8
 minio==7.1.17 ; python_version >= "3.9" and python_version < "3.10" \
     --hash=sha256:0aa525d77a3bc61378444c2400b0ba2685ad4cd6ecb3fba4141a0d0765e25f40 \
     --hash=sha256:b0b687c1ec9be422a1f8b04c65fb8e43a1c090f9508178db57c434a17341c404
