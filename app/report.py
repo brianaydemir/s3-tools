@@ -19,6 +19,7 @@ import humanize
 
 SMTP_HOST = os.environ.get("SMTP_HOST", "SMTP_HOST not defined")
 SMTP_PORT = int(os.environ.get("SMTP_PORT", "25"))
+SMTP_USE_SSL = os.environ.get("SMTP_USE_SSL", "no")
 TO = os.environ.get("TO", "TO not defined")
 FROM = os.environ.get("FROM", "FROM not defined")
 SUBJECT = os.environ.get("SUBJECT", "S3 storage report")
@@ -175,7 +176,8 @@ def send_email(data: Snapshot) -> None:
     message.attach(email.mime.text.MIMEText(html, "html"))
 
     server = smtplib.SMTP(SMTP_HOST, port=SMTP_PORT)
-    server.starttls(context=ssl.create_default_context())
+    if SMTP_USE_SSL.lower() == "yes":
+        server.starttls(context=ssl.create_default_context())
     server.send_message(message)
     server.quit()
 
