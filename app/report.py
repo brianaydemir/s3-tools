@@ -18,6 +18,7 @@ from typing import Any, Dict
 import humanize
 
 SMTP_HOST = os.environ.get("SMTP_HOST", "SMTP_HOST not defined")
+SMTP_PORT = int(os.environ.get("SMTP_PORT", "25"))
 TO = os.environ.get("TO", "TO not defined")
 FROM = os.environ.get("FROM", "FROM not defined")
 SUBJECT = os.environ.get("SUBJECT", "S3 storage report")
@@ -173,7 +174,7 @@ def send_email(data: Snapshot) -> None:
     message["Subject"] = f"{SUBJECT} ({s_files} files, {s_bytes})"
     message.attach(email.mime.text.MIMEText(html, "html"))
 
-    server = smtplib.SMTP(SMTP_HOST)
+    server = smtplib.SMTP(SMTP_HOST, port=SMTP_PORT)
     server.starttls(context=ssl.create_default_context())
     server.send_message(message)
     server.quit()
