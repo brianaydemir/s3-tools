@@ -8,6 +8,7 @@ import email.mime.text
 import json
 import logging
 import os
+import os.path
 import pathlib
 import smtplib
 import ssl
@@ -181,7 +182,8 @@ def send_email(data: Snapshot) -> None:
 def main() -> None:
     logging.info("Starting")
 
-    files = sorted(os.listdir(SNAPSHOT_DIR), reverse=True)
+    listing = sorted(os.listdir(SNAPSHOT_DIR), reverse=True)
+    files = [path for path in listing if os.path.isfile(SNAPSHOT_DIR / path)]
     if not files:
         logging.error("No snapshots found in: %s", SNAPSHOT_DIR)
         sys.exit(1)
