@@ -11,6 +11,7 @@ import os
 import os.path
 import pathlib
 import smtplib
+import ssl
 import sys
 from typing import Any, Dict
 
@@ -172,7 +173,8 @@ def send_email(data: Snapshot) -> None:
     message["Subject"] = f"{SUBJECT} ({s_files} files, {s_bytes})"
     message.attach(email.mime.text.MIMEText(html, "html"))
 
-    server = smtplib.SMTP_SSL(SMTP_HOST)
+    server = smtplib.SMTP(SMTP_HOST)
+    server.starttls(context=ssl.create_default_context())
     server.send_message(message)
     server.quit()
 
