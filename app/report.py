@@ -123,7 +123,7 @@ def get_html(data: Snapshot) -> str:
     html = ""
 
     if data["metadata"]["delta"]:
-        delta = humanize.naturaldelta(data["metadata"]["delta"])
+        delta = humanize.precisedelta(data["metadata"]["delta"])
         now = data["metadata"]["now"]
         html += f"<p>In the {delta} leading up to {now}:</p>"
 
