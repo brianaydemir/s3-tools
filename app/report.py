@@ -110,10 +110,10 @@ def get_row_html(
 
     html += f"""
         <td style="min-width: 10em; {padding}">{label}</td>
-        <td style="min-width:  8em; {padding}{numeric}">{format_count(files)}</td>
-        <td style="min-width:  8em; {padding}{numeric}">{format_count(d_files, delta=True)}</td>
-        <td style="min-width:  8em; {padding}{numeric}">{format_bytes(bytes)}</td>
-        <td style="min-width:  8em; {padding}{numeric}">{format_bytes(d_bytes, delta=True)}</td>
+        <td style="min-width:  7em; {padding}{numeric}">{format_count(files)}</td>
+        <td style="min-width:  7em; {padding}{numeric}">{format_count(d_files, delta=True)}</td>
+        <td style="min-width:  7em; {padding}{numeric}">{format_bytes(bytes)}</td>
+        <td style="min-width:  7em; {padding}{numeric}">{format_bytes(d_bytes, delta=True)}</td>
         </tr>
     """
     return html
