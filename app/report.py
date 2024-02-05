@@ -172,7 +172,7 @@ def send_email(data: Snapshot) -> None:
     message = email.mime.multipart.MIMEMultipart("alternative")
     message["To"] = TO
     message["Sender"] = FROM
-    message["Subject"] = f"{SUBJECT} ({s_files} files, {s_bytes})"
+    message["Subject"] = f"({s_files} files, {s_bytes}) {SUBJECT}"
     message.attach(email.mime.text.MIMEText(html, "html"))
 
     server = smtplib.SMTP(SMTP_HOST, port=SMTP_PORT)

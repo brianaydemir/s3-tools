@@ -10,7 +10,7 @@ import pathlib
 import sys
 from typing import Any, Dict, Tuple
 
-import minio  # type: ignore[import-untyped]
+import minio
 
 SNAPSHOT_DIR = pathlib.Path(os.environ.get("SNAPSHOT_DIR", "/snapshots"))
 S3_HOST = os.environ.get("S3_HOST", "S3_HOST not defined")
