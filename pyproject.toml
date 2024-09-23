@@ -40,29 +40,30 @@ sqlite_cache = true
 
 [tool.poetry]
 name = "s3_tools"
-version = "0.0.1"
+version = "1.0.0"
 description = "Assorted utilities for working with S3 storage"
 license = "Apache-2.0"
-authors = ["Brian Aydemir <baydemir@morgridge.org>"]
+authors = [
+    "Brian Aydemir <baydemir@morgridge.org>",
+]
 repository = "https://github.com/brianaydemir/s3-tools"
 packages = [{ include = "app" }]
 
 
 [tool.poetry.dependencies]
 python = "^3.9"
-humanize = "~4.9"
+humanize = "~4.10"
 minio = "~7.2"
 
 
 [tool.poetry.group.dev.dependencies]
 bandit = "~1.7"
-black = "~24.1"
-docutils = "~0.20"
+black = "~24.8"
 isort = "~5.13"
-mypy = "~1.8"
-pre-commit = "~3.6"
-pylint = "~3.0"
-safety = "~2.3"
+markdown = "~3.7"
+mypy = "~1.11"
+pre-commit = "~3.8"
+pylint = "~3.3"
 
 
 [tool.pylint.messages-control]
