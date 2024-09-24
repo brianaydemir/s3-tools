@@ -8,7 +8,7 @@ import logging
 import os
 import pathlib
 import sys
-from typing import Any, Dict, Tuple
+from typing import Any
 
 import minio
 
@@ -17,7 +17,7 @@ S3_HOST = os.environ.get("S3_HOST", "S3_HOST not defined")
 S3_ACCESS_KEY = os.environ.get("S3_ACCESS_KEY", "S3_ACCESS_KEY not defined")
 S3_SECRET_KEY = os.environ.get("S3_SECRET_KEY", "S3_SECRET_KEY not defined")
 
-Snapshot = Dict[str, Dict[str, Any]]
+Snapshot = dict[str, dict[str, Any]]
 
 
 def get_current_time() -> str:
@@ -34,7 +34,7 @@ def get_client() -> minio.Minio:
     return minio.Minio(S3_HOST, access_key=S3_ACCESS_KEY, secret_key=S3_SECRET_KEY)
 
 
-def scan_bucket(s3: minio.Minio, name: str) -> Tuple[int, int]:
+def scan_bucket(s3: minio.Minio, name: str) -> tuple[int, int]:
     """
     Returns the total number of files and bytes in the given S3 bucket.
     """
@@ -67,7 +67,7 @@ def main() -> None:
         data["buckets"][name] = {"files": num_files, "bytes": num_bytes}
     data["metadata"]["end"] = get_current_time()
 
-    with open(snapshot_file, encoding="utf-8", mode="w") as fp:
+    with open(snapshot_file, mode="w", encoding="utf-8") as fp:
         json.dump(data, fp, indent=2)
     logging.info("Finished!")
 

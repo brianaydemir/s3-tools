@@ -13,19 +13,19 @@ import pathlib
 import smtplib
 import ssl
 import sys
-from typing import Any, Dict
+from typing import Any
 
 import humanize
 
 SMTP_HOST = os.environ.get("SMTP_HOST", "SMTP_HOST not defined")
 SMTP_PORT = int(os.environ.get("SMTP_PORT", "25"))
 SMTP_USE_SSL = os.environ.get("SMTP_USE_SSL", "yes")
-TO = os.environ.get("TO", "TO not defined")
 FROM = os.environ.get("FROM", "FROM not defined")
 SUBJECT = os.environ.get("SUBJECT", "S3 storage report")
+TO = os.environ.get("TO", "TO not defined")
 SNAPSHOT_DIR = pathlib.Path(os.environ.get("SNAPSHOT_DIR", "/snapshots"))
 
-Snapshot = Dict[str, Dict[str, Any]]
+Snapshot = dict[str, dict[str, Any]]
 
 
 def format_count(n: int, delta: bool = False) -> str:
@@ -50,7 +50,7 @@ def load_snapshot(path: os.PathLike) -> Snapshot:
     """
     Returns a snapshot that was previously created by `app.snapshot`.
     """
-    with open(path, encoding="utf-8", mode="r") as fp:
+    with open(path, mode="r", encoding="utf-8") as fp:
         return json.load(fp)  # type: ignore[no-any-return]
 
 
@@ -125,7 +125,7 @@ def get_html(data: Snapshot) -> str:
     if data["metadata"]["delta"]:
         delta = humanize.precisedelta(data["metadata"]["delta"])
         now = data["metadata"]["now"]
-        html += f"<p>In the {delta} leading up to {now}:</p>"
+        html += f"<p>In the {delta} leading up to {now}:</p>\n"
 
     html += """
         <table>
@@ -170,9 +170,9 @@ def send_email(data: Snapshot) -> None:
     logging.debug(html)
 
     message = email.mime.multipart.MIMEMultipart("alternative")
-    message["To"] = TO
     message["Sender"] = FROM
     message["Subject"] = f"({s_files} files, {s_bytes}) {SUBJECT}"
+    message["To"] = TO
     message.attach(email.mime.text.MIMEText(html, "html"))
 
     server = smtplib.SMTP(SMTP_HOST, port=SMTP_PORT)
