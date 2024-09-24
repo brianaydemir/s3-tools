@@ -23,6 +23,9 @@ argon2-cffi-bindings==21.2.0 ; python_version >= "3.9" and python_version < "4.0
 argon2-cffi==23.1.0 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:879c3e79a2729ce768ebb7d36d4609e3a78a4ca2ec3a9f12286ca057e3d0db08 \
     --hash=sha256:c670642b78ba29641818ab2e68bd4e6a78ba53b7eff7b4c3815ae16abf91c7ea
+boto==2.49.0 ; python_version >= "3.9" and python_version < "4.0" \
+    --hash=sha256:147758d41ae7240dc989f0039f27da8ca0d53734be0eb869ef16e3adcfa462e8 \
+    --hash=sha256:ea0d3b40a2d852767be77ca343b58a9e3a4b00d9db440efb8da74b4e58025e5a
 certifi==2024.8.30 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:922820b53db7a7257ffbda3f597266d435245903d80737e34f8a45ff3e3230d8 \
     --hash=sha256:bec941d2aa8195e248a60b31ff9f0558284cf01a52591ceda73ea9afffd69fd9
@@ -136,6 +139,9 @@ pycryptodome==3.20.0 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:f35d6cee81fa145333137009d9c8ba90951d7d77b67c79cbe5f03c7eb74d8fe2 \
     --hash=sha256:f47888542a0633baff535a04726948e876bf1ed880fddb7c10a736fa99146ab3 \
     --hash=sha256:fb3b87461fa35afa19c971b0a2b7456a7b1db7b4eba9a8424666104925b78128
+radosgw-admin==1.7.2 ; python_version >= "3.9" and python_version < "4.0" \
+    --hash=sha256:ac05f78ec41caaef4209f90932b857704aa031017bf31faa7f30ec0d7fc80471 \
+    --hash=sha256:c22ade8e75397717a37ffa9277be2658d2e71c09942eac8eb9d5807a751abf30
 typing-extensions==4.12.2 ; python_version >= "3.9" and python_version < "4.0" \
     --hash=sha256:04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d \
     --hash=sha256:1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8

@@ -11,11 +11,13 @@ import sys
 from typing import Any
 
 import minio
+import radosgw  # type: ignore[import-untyped]
 
 SNAPSHOT_DIR = pathlib.Path(os.environ.get("SNAPSHOT_DIR", "/snapshots"))
 S3_HOST = os.environ.get("S3_HOST", "S3_HOST not defined")
 S3_ACCESS_KEY = os.environ.get("S3_ACCESS_KEY", "S3_ACCESS_KEY not defined")
 S3_SECRET_KEY = os.environ.get("S3_SECRET_KEY", "S3_SECRET_KEY not defined")
+USE_RGW_ADMIN_OPS = os.environ.get("USE_RGW_ADMIN_OPS", "no")
 
 Snapshot = dict[str, dict[str, Any]]
 
@@ -27,18 +29,67 @@ def get_current_time() -> str:
     return datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat()
 
 
-def get_client() -> minio.Minio:
+def get_client(
+    access_key: str = S3_ACCESS_KEY,
+    secret_key: str = S3_SECRET_KEY,
+) -> minio.Minio:
     """
     Returns a client object for interacting with S3.
     """
-    return minio.Minio(S3_HOST, access_key=S3_ACCESS_KEY, secret_key=S3_SECRET_KEY)
+    return minio.Minio(
+        S3_HOST,
+        access_key=access_key,
+        secret_key=secret_key,
+    )
 
 
-def scan_bucket(s3: minio.Minio, name: str) -> tuple[int, int]:
+def get_admin_client(
+    access_key: str = S3_ACCESS_KEY,
+    secret_key: str = S3_SECRET_KEY,
+) -> radosgw.connection.RadosGWAdminConnection:
+    """
+    Returns a client object for a Ceph Object Gateway.
+    """
+    return radosgw.connection.RadosGWAdminConnection(
+        host=S3_HOST,
+        access_key=access_key,
+        secret_key=secret_key,
+    )
+
+
+def get_buckets() -> list[tuple[str, str, str]]:
+    """
+    Returns a list of (bucket name, access key, secret key) tuples.
+    """
+    buckets = []
+
+    if USE_RGW_ADMIN_OPS != "yes":
+        s3 = get_client(access_key=S3_ACCESS_KEY, secret_key=S3_SECRET_KEY)
+
+        for bucket in s3.list_buckets():
+            access_key = S3_ACCESS_KEY
+            secret_key = S3_SECRET_KEY
+            buckets.append((bucket.name, access_key, secret_key))
+
+    else:
+        rgw = get_admin_client(access_key=S3_ACCESS_KEY, secret_key=S3_SECRET_KEY)
+
+        for bucket in rgw.get_buckets():
+            user = rgw.get_user(bucket.owner)
+            access_key = user.keys[0].access_key
+            secret_key = user.keys[0].secret_key
+            buckets.append((bucket.name, access_key, secret_key))
+
+    return buckets
+
+
+def scan_bucket(name: str, access_key: str, secret_key: str) -> tuple[int, int]:
     """
     Returns the total number of files and bytes in the given S3 bucket.
     """
     logging.info("Scanning bucket: %s", name)
+
+    s3 = get_client(access_key=access_key, secret_key=secret_key)
 
     num_files = 0
     num_bytes = 0
@@ -58,12 +109,10 @@ def main() -> None:
         "buckets": {},
         "metadata": {"version": "1", "start": get_current_time()},
     }
-    s3 = get_client()
     snapshot_file = SNAPSHOT_DIR / f'{data["metadata"]["start"]}.json'
 
-    for bucket in s3.list_buckets():
-        name = bucket.name
-        (num_files, num_bytes) = scan_bucket(s3, name)
+    for name, access_key, secret_key in get_buckets():
+        num_files, num_bytes = scan_bucket(name, access_key, secret_key)
         data["buckets"][name] = {"files": num_files, "bytes": num_bytes}
     data["metadata"]["end"] = get_current_time()
 

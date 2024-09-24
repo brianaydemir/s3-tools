@@ -40,7 +40,7 @@ sqlite_cache = true
 
 [tool.poetry]
 name = "s3_tools"
-version = "1.0.0"
+version = "1.1.0"
 description = "Assorted utilities for working with S3 storage"
 license = "Apache-2.0"
 authors = [
@@ -54,6 +54,7 @@ packages = [{ include = "app" }]
 python = "^3.9"
 humanize = "~4.10"
 minio = "~7.2"
+radosgw-admin = "~1.7"
 
 
 [tool.poetry.group.dev.dependencies]
